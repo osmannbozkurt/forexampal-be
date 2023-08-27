@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    
+    <changeSet id="2023-07-19 21:19" author="irfan.cimen">
+        <sql>
+            insert into subject(id, name, class_level, parent_id) values (nextval('SEQ_SUBJECT'), 'matematik', 1, null);
+            insert into subject(id, name, class_level, parent_id) values (nextval('SEQ_SUBJECT'), 'turkce', 1, null);
+            insert into subject(id, name, class_level, parent_id) values (nextval('SEQ_SUBJECT'), 'ingilizce', 1, null);
+            insert into subject(id, name, class_level, parent_id) values (nextval('SEQ_SUBJECT'), 'kumeler', 1, (select id from subject where name = 'matematik'));
+            insert into subject(id, name, class_level, parent_id) values (nextval('SEQ_SUBJECT'), 'sozcukte anlam', 1, (select id from subject where name = 'turkce'));
+            insert into subject(id, name, class_level, parent_id) values (nextval('SEQ_SUBJECT'), 'deyimler', 1, (select id from subject where name = 'sozcukte anlam'));
+        </sql>
+    </changeSet>
+
+    <changeSet id="2023-07-19 21:29" author="irfan.cimen">
+        <sql>
+            insert into task(id, description, task_type, start_day, start_hour, end_day, end_hour, status, subject_id)
+                values (nextval('SEQ_TASK'), 'deneme sinavi desc', 'EXAM', now(), '12:00', now(), '14:00', 'STARTED',
+                        (select id from subject where name = 'matematik'));
+        </sql>
+    </changeSet>
+
+    <changeSet id="2023-07-23 15:29" author="irfan.cimen">
+        <sql>
+            insert into student(id, name, surname) values (nextval('SEQ_STUDENT'), 'Deniz', 'Özüpekçe');
+            insert into student(id, name, surname) values (nextval('SEQ_STUDENT'), 'Maya', 'Bozkurt');
+            insert into student(id, name, surname) values (nextval('SEQ_STUDENT'), 'İrem', 'Çimen');
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>

@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+
+    <changeSet id="2023-07-17 23:06" author="irfan.cimen">
+        <sql>
+            CREATE SCHEMA IF NOT EXISTS sch_fep;
+        </sql>
+    </changeSet>
+    
+    <changeSet id="2023-07-17 23:07" author="irfan.cimen">
+        <createTable tableName="TEST">
+            <column name="ID" type="NUMBER(19,0)">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="NAME" type="varchar(255)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="2023-07-17 23:08" author="irfan.cimen">
+        <createSequence sequenceName="SEQ_SUBJECT" cacheSize="20" cycle="true" incrementBy="1" maxValue="999999999999999"
+                        minValue="1" startValue="1"/>
+    </changeSet>
+    
+    <changeSet id="2023-07-17 23:09" author="irfan.cimen">
+        <createTable tableName="subject">
+            <column name="ID" type="bigint">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="NAME" type="varchar2(255)"/>
+            <column name="CLASS_LEVEL" type="integer"/>
+            <column name="PARENT_ID" type="bigint"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="2023-07-17 23:10" author="irfan.cimen">
+        <addForeignKeyConstraint baseTableName="subject" baseColumnNames="parent_id" constraintName="FK_SUBJECT_PARENT" referencedTableName="subject"
+                                 referencedColumnNames="id" onDelete="RESTRICT" onUpdate="RESTRICT"  deferrable="false" initiallyDeferred="false"/>
+    </changeSet>
+
+    <changeSet id="2023-07-19 21:08" author="irfan.cimen">
+        <createSequence sequenceName="SEQ_TASK" cacheSize="20" cycle="true" incrementBy="1" maxValue="999999999999999"
+                        minValue="1" startValue="1"/>
+    </changeSet>
+
+    <changeSet id="2023-07-19 21:09" author="irfan.cimen">
+        <createTable tableName="task">
+            <column name="ID" type="bigint">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="DESCRIPTION" type="varchar2(255)"/>
+            <column name="TASK_TYPE" type="varchar2(60)"/>
+            <column name="START_DAY" type="date"/>
+            <column name="START_HOUR" type="varchar2(20)"/>
+            <column name="END_DAY" type="date"/>
+            <column name="END_HOUR" type="varchar2(20)"/>
+            <column name="STATUS" type="varchar2(60)"/>
+            <column name="SUBJECT_ID" type="bigint"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="2023-07-19 23:10" author="irfan.cimen">
+        <addForeignKeyConstraint baseTableName="task" baseColumnNames="subject_id" constraintName="FK_TASK_SUBJECT" referencedTableName="subject"
+                                 referencedColumnNames="id" onDelete="RESTRICT" onUpdate="RESTRICT"  deferrable="false" initiallyDeferred="false"/>
+    </changeSet>
+
+    <changeSet id="2023-07-23 15:08" author="irfan.cimen">
+        <createSequence sequenceName="SEQ_STUDENT" cacheSize="20" cycle="true" incrementBy="1" maxValue="999999999999999"
+                        minValue="1" startValue="1"/>
+    </changeSet>
+
+    <changeSet id="2023-07-23 15:09" author="irfan.cimen">
+        <createTable tableName="student">
+            <column name="ID" type="bigint">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="NAME" type="varchar2(100)"/>
+            <column name="SURNAME" type="varchar2(100)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="2023-07-23 15:18" author="irfan.cimen">
+        <createSequence sequenceName="SEQ_STUDENT_TASK" cacheSize="20" cycle="true" incrementBy="1" maxValue="999999999999999"
+                        minValue="1" startValue="1"/>
+    </changeSet>
+
+    <changeSet id="2023-07-23 19:00" author="irfan.cimen">
+        <createTable tableName="student_task">
+            <column name="ID" type="bigint">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="STUDENT_ID" type="bigint"/>
+            <column name="TASK_ID" type="bigint"/>
+            <column name="STATUS" type="varchar2(25)"/>
+            <column name="COR_ANS_COUNT" type="number(19, 0)"/>
+            <column name="WRONG_ANS_COUNT" type="number(19, 0)"/>
+            <column name="GRADE" type="numeric(20, 2)"/>
+        </createTable>
+        <addForeignKeyConstraint baseTableName="STUDENT_TASK" baseColumnNames="STUDENT_ID" constraintName="FK_STUDENT_TASK_STUDENT" referencedTableName="STUDENT"
+                                 referencedColumnNames="ID" onDelete="RESTRICT" onUpdate="RESTRICT"  deferrable="false" initiallyDeferred="false"/>
+        <addForeignKeyConstraint baseTableName="STUDENT_TASK" baseColumnNames="TASK_ID" constraintName="FK_STUDENT_TASK_TASK" referencedTableName="TASK"
+                                 referencedColumnNames="ID" onDelete="RESTRICT" onUpdate="RESTRICT"  deferrable="false" initiallyDeferred="false"/>
+    </changeSet>
+
+    <changeSet id="2023-07-29 21:56" author="irfan.cimen" runOnChange="true">
+        <addColumn tableName="task">
+            <column name="reward" type="int"/>
+            <column name="public" type="boolean"/>
+            <column name="CREATOR_ID" type="bigint"/>
+        </addColumn>
+    </changeSet>
+    
+    <changeSet id="2023-07-29 21:59" author="irfan.cimen" runOnChange="true">
+        <createSequence sequenceName="SEQ_TASK_MATERIAL" cacheSize="20" cycle="true" incrementBy="1" maxValue="999999999999999" minValue="1" startValue="1"/>
+
+        <createTable tableName="TASK_MATERIAL">
+            <column name="ID" type="bigint">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="TASK_ID" type="bigint"/>
+            <column name="PATH" type="varchar2(255)"/>
+            <column name="FILE_TYPE" type="varchar2(60)"/>
+            <column name="WIDTH" type="int"/>
+            <column name="HEIGHT" type="int"/>
+        </createTable>
+        <addForeignKeyConstraint baseTableName="TASK_MATERIAL" baseColumnNames="TASK_ID" constraintName="FK__TASK_MATERIAL_TASK" referencedTableName="TASK"
+                                 referencedColumnNames="ID" onDelete="RESTRICT" onUpdate="RESTRICT"  deferrable="false" initiallyDeferred="false"/>
+    </changeSet>
+
+    <changeSet id="2023-07-29 22:04" author="irfan.cimen" runOnChange="true">
+        <createSequence sequenceName="SEQ_STUDENT_TASK_ANSWER" cacheSize="20" cycle="true" incrementBy="1" maxValue="999999999999999" minValue="1" startValue="1"/>
+
+        <createTable tableName="STUDENT_TASK_ANSWER">
+            <column name="ID" type="bigint">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="STUDENT_TASK_ID" type="bigint"/>
+            <column name="USER_ID" type="bigint"/>
+            <column name="ANSWER_DATE" type="datetime"/>
+            <column name="USER_TYPE" type="varchar2(60)"/>
+            <column name="IMAGE_PATH" type="varchar2(255)"/>
+            <column name="WIDTH" type="int"/>
+            <column name="HEIGHT" type="int"/>
+        </createTable>
+        <addForeignKeyConstraint baseTableName="STUDENT_TASK_ANSWER" baseColumnNames="STUDENT_TASK_ID" constraintName="FK__STUDENT_TASK_ANSWER_STUDENT_TASK"
+                                 referencedTableName="STUDENT_TASK" referencedColumnNames="ID" onDelete="RESTRICT" onUpdate="RESTRICT"  deferrable="false" initiallyDeferred="false"/>
+    </changeSet>
+
+    <changeSet id="2023-08-01 22:00" author="irfancimen">
+        <addColumn tableName="student_task">
+            <column name="teacher_id" type="bigint"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="2023-08-01 22:30" author="irfancimen">
+        <addColumn tableName="STUDENT_TASK_ANSWER">
+            <column name="COMMENT_ANSWER" type="VARCHAR2(255)"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="2023-08-09 22:33" author="irfancimen">
+        <createTable tableName="USER">
+            <column></column>
+        </createTable>
+        <createSequence sequenceName=""/>
+    </changeSet>
+
+    <changeSet id="2023-08-09 22:40" author="irfancimen">
+        <createTable tableName="CLASS_QUESTION">
+            <column></column>
+        </createTable>
+        <createSequence sequenceName=""/>
+    </changeSet>
+
+    <changeSet id="2023-08-09 22:45" author="irfancimen">
+        <createTable tableName="CLASS_QUESTION_TAGGED_USER">
+            <column></column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="2023-08-09 22:55" author="irfancimen">
+        <createTable tableName="class_question_answer">
+            <column></column>
+        </createTable>
+        <createSequence sequenceName=""/>
+    </changeSet>
+
+    <changeSet id="2023-08-09 22:50" author="irfancimen">
+        <createTable tableName="CLASS_QUESTION_ANSWER_TAGGED_USER">
+            <column></column>
+        </createTable>
+    </changeSet>
+
+</databaseChangeLog>
