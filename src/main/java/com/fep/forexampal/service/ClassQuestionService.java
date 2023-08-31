@@ -153,7 +153,8 @@ public class ClassQuestionService {
         }
 
         try {
-            String path = imageService.uploadAndGetPath(file);
+            //String path = imageService.uploadAndGetPath(file);
+            String path = imageService.saveAndGetImagePath(file);
             image.setImagePath(path);
             BufferedImage bufferedImage = ImageIO.read(file.getInputStream());
             image.setWidth(bufferedImage.getWidth());

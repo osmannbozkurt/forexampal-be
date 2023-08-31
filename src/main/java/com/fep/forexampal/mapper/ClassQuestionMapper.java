@@ -22,8 +22,9 @@ public interface ClassQuestionMapper {
 
     List<ClassQuestionItemDto> toClassQuestionItemList(List<ClassQuestion> classQuestions);
 
-    @Mapping(target = "imagePath", expression = "java(classQuestion.getImage().getImagePath() != null ? " +
-            "com.fep.forexampal.common.utils.MediaUtils.generateFileUrl(classQuestion.getImage().getImagePath()) : null)")
+    //@Mapping(target = "imagePath", expression = "java(classQuestion.getImage().getImagePath() != null ? " +
+    //        "com.fep.forexampal.common.utils.MediaUtils.generateFileUrl(classQuestion.getImage().getImagePath()) : null)")
+    @Mapping(target = "imagePath", source = "image.imagePath")
     @Mapping(target = "width", source = "image.width")
     @Mapping(target = "height", source = "image.height")
     @Mapping(target = "ownerName", source = "user.name")

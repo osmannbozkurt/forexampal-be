@@ -54,6 +54,8 @@ public class ClassQuestionSpecification {
                 predicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get("createdDate"), date));
             }
 
+            query.orderBy(criteriaBuilder.desc(root.get("createdDate")));
+
             return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
         };
     }

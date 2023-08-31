@@ -24,8 +24,9 @@ public interface ClassQuestionAnswerMapper {
     @Mapping(target = "answerOwnerName", source = "user.name")
     @Mapping(target = "answerOwnerSurname", source = "user.surname")
     @Mapping(target = "answerDate", source = "createdDate")
-    @Mapping(target = "imagePath", expression = "java(classQuestionAnswer.getImage().getImagePath() != null ? " +
-            "com.fep.forexampal.common.utils.MediaUtils.generateFileUrl(classQuestionAnswer.getImage().getImagePath()) : null)")
+    @Mapping(target = "imagePath", source = "image.imagePath")
+    //@Mapping(target = "imagePath", expression = "java(classQuestionAnswer.getImage().getImagePath() != null ? " +
+    //        "com.fep.forexampal.common.utils.MediaUtils.generateFileUrl(classQuestionAnswer.getImage().getImagePath()) : null)")
     @Mapping(target = "width", source = "image.width")
     @Mapping(target = "height", source = "image.height")
     @Mapping(target = "answerOwnerId", source = "user.id")
