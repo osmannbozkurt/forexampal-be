@@ -9,8 +9,11 @@ import com.fep.forexampal.dto.ClassQuestionAnswerAddRequestDto;
 import com.fep.forexampal.dto.ClassQuestionDetailResponseDto;
 import com.fep.forexampal.dto.ClassQuestionResponseDto;
 import com.fep.forexampal.service.ClassQuestionService;
+import com.fep.forexampal.service.media.ImageService;
 import com.fep.forexampal.validator.ValidMedia;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -35,6 +38,8 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class ClassQuestionController {
 
+    private static final Logger logger = LoggerFactory.getLogger(ClassQuestionController.class);
+
     private final ClassQuestionService classQuestionService;
 
     private final ObjectMapper objectMapper = new ObjectMapper();
@@ -46,6 +51,7 @@ public class ClassQuestionController {
                                                             @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss") Date date,
                                                             @RequestParam(required = false) Boolean isRewarded,
                                                             @RequestParam(required = false) ClassQuestionFilterSolvedStatus questionStatus) {
+        logger.info("get all class questions requested");
         ClassFilterOptions.ClassFilterOptionsBuilder filterOptions = ClassFilterOptions.builder();
         Optional.ofNullable(subjectId).ifPresent(filterOptions::subjectId);
         Optional.ofNullable(childSubjectId).ifPresent(filterOptions::childSubjectId);
