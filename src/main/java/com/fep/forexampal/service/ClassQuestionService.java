@@ -22,6 +22,7 @@ import com.fep.forexampal.persistence.repository.ClassQuestionAnswerRepository;
 import com.fep.forexampal.persistence.repository.ClassQuestionRepository;
 import com.fep.forexampal.service.media.ImageService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -41,6 +42,7 @@ import static com.fep.forexampal.common.enums.ErrorMessage.CLASS_QUESTION_ANSWER
 import static com.fep.forexampal.common.enums.ErrorMessage.CLASS_QUESTION_NOT_FOUND_ERROR;
 import static com.fep.forexampal.common.enums.ErrorMessage.SYSTEM_ERROR;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class ClassQuestionService {
@@ -155,6 +157,7 @@ public class ClassQuestionService {
         try {
             //String path = imageService.uploadAndGetPath(file);
             String path = imageService.saveAndGetImagePath(file);
+            log.info("Saved image path: {}", path);
             image.setImagePath(path);
             BufferedImage bufferedImage = ImageIO.read(file.getInputStream());
             image.setWidth(bufferedImage.getWidth());

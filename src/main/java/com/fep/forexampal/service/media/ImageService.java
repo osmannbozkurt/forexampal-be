@@ -7,6 +7,7 @@ import com.fep.forexampal.dto.ImageSaveRequest;
 import com.fep.forexampal.exception.SystemException;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
 import org.springframework.core.io.UrlResource;
 import org.springframework.http.ResponseEntity;
@@ -25,6 +26,7 @@ import java.util.Base64;
 
 import static com.fep.forexampal.common.enums.ErrorMessage.SYSTEM_ERROR;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class ImageService {
@@ -71,7 +73,9 @@ public class ImageService {
             byte[] encode = Base64.getEncoder().encode(file.getBytes());
             String encodedStr = new String(encode);
             String uriString = UriComponentsBuilder.fromHttpUrl(BASE_PATH).pathSegment("save-image").toUriString();
+            log.info("Request to server url is: {}", uriString);
             ResponseEntity<String> response = restTemplate.postForEntity(uriString, new ImageSaveRequest(encodedStr), String.class);
+            log.info("Image server response {}", response);
             return handleResponse(response);
         } catch (IOException e) {
             throw new SystemException(SYSTEM_ERROR.getMessage(), SYSTEM_ERROR.getCode());
@@ -80,6 +84,7 @@ public class ImageService {
 
     private String handleResponse(ResponseEntity<String> response) {
         if (!response.getStatusCode().is2xxSuccessful()) {
+            log.info("Image server error. Status code is {}", response.getStatusCode());
             return null;
         }
         return response.getBody();
