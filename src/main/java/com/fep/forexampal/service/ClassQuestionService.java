@@ -151,6 +151,7 @@ public class ClassQuestionService {
     private Image checkAndBuildImageContainer(MultipartFile file) {
         Image image = new Image();
         if (Objects.isNull(file)) {
+            log.info("Multipart file is null");
             return image;
         }
 
