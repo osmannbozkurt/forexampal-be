@@ -13,11 +13,7 @@ import com.fep.forexampal.exception.ClassQuestionNotFoundException;
 import com.fep.forexampal.exception.SystemException;
 import com.fep.forexampal.mapper.ClassQuestionAnswerMapper;
 import com.fep.forexampal.mapper.ClassQuestionMapper;
-import com.fep.forexampal.persistence.entity.ClassQuestion;
-import com.fep.forexampal.persistence.entity.ClassQuestionAnswer;
-import com.fep.forexampal.persistence.entity.Image;
-import com.fep.forexampal.persistence.entity.Subject;
-import com.fep.forexampal.persistence.entity.User;
+import com.fep.forexampal.persistence.entity.*;
 import com.fep.forexampal.persistence.repository.ClassQuestionAnswerRepository;
 import com.fep.forexampal.persistence.repository.ClassQuestionRepository;
 import com.fep.forexampal.service.media.ImageService;
@@ -55,6 +51,7 @@ public class ClassQuestionService {
     private final ClassQuestionRepository classQuestionRepository;
     private final ClassQuestionAnswerRepository classQuestionAnswerRepository;
     private final ClassQuestionSpecification classQuestionSpecification;
+    private final ClassSubjectService classSubjectService;
 
     public ClassQuestionResponseDto findAll(ClassFilterOptions options, Pageable pageable) {
         Specification<ClassQuestion> specifications = classQuestionSpecification.generateFilterSpecs(options);
@@ -66,11 +63,13 @@ public class ClassQuestionService {
     @Transactional
     public void saveQuestion(Long studentId, ClassQuestionAddRequestDto requestDto, MultipartFile file) {
         User questionOwner = userService.findById(studentId);
-        Subject subject = subjectService.findById(requestDto.getSubjectId());
+        ClassSubject classSubject = classSubjectService.findBySubjectId(requestDto.getSubjectId());
         List<User> taggedUsers = userService.getUserListByIds(requestDto.getTaggedUsers());
         ClassQuestion classQuestion = classQuestionMapper.toClassQuestion(requestDto);
+        UserClass userClass = userService.getUserClassByUserId(questionOwner.getId());
         classQuestion.setUser(questionOwner);
-        classQuestion.setSubject(subject);
+        classQuestion.setClassSubject(classSubject);
+        classQuestion.setClassLevel(userClass.getClassRoom().getLevel());
 
         if (CollectionUtils.isNotEmpty(taggedUsers)) {
             classQuestion.setTaggedUser(new HashSet<>(taggedUsers));

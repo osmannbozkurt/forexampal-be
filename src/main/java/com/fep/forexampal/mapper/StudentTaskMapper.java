@@ -56,7 +56,7 @@ public interface StudentTaskMapper {
 
     @Named("generateFileUrl")
     default String generateFileUrl(String imagePath) {
-        return "http://localhost:9001/" + imagePath;
+        return  imagePath;
     }
 
     @Named("convertToMonthAsName")

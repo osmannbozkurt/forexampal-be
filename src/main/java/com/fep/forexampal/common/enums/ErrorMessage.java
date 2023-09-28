@@ -14,7 +14,9 @@ public enum ErrorMessage {
     USER_NOT_FOUND(5, "user.not.found.error"),
     SUBJECT_NOT_FOUND(6, "subject.not.found.error"),
     CLASS_QUESTION_NOT_FOUND_ERROR(7, "class.question.not.found.error"),
-    CLASS_QUESTION_ANSWER_NOT_FOUND_ERROR(8, "class.question.answer.not.found.error");
+    CLASS_QUESTION_ANSWER_NOT_FOUND_ERROR(8, "class.question.answer.not.found.error"),
+    CLASS_SUBJECT_NOT_FOUND(9, "classSubject.not.found.error"),
+    USER_CLASS_NOT_FOUND(10, "userClass.not.found.error");
 
     @Getter
     private final int code;

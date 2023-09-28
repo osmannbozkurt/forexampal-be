@@ -23,7 +23,7 @@ public class ClassQuestionSpecification {
 
     private final SubjectRepository subjectRepository;
 
-    private static final String SUBJECT_PROP = "subject";
+    private static final String SUBJECT_PROP = "classSubject";
 
     public Specification<ClassQuestion> generateFilterSpecs(ClassFilterOptions options) {
         return (root, query, criteriaBuilder) -> {

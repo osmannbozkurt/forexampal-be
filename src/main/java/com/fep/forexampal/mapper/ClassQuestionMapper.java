@@ -31,7 +31,7 @@ public interface ClassQuestionMapper {
     @Mapping(target = "ownerSurname", source = "user.surname")
     @Mapping(target = "totalTaggedUser", expression = "java(classQuestion.getTaggedUser().size())")
     @Mapping(target = "totalComment", expression = "java(classQuestion.getClassQuestionAnswer().size())")
-    @Mapping(target = "subjects", expression = "java(classQuestion.getSubject().getOrderedSubjectNameWithParents())")
+    @Mapping(target = "subjects", expression = "java(classQuestion.getClassSubject().getOrderedSubjectNameWithParents())")
     ClassQuestionItemDto toClassQuestionDto(ClassQuestion classQuestion);
 
 }

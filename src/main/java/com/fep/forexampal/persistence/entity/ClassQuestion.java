@@ -42,7 +42,11 @@ public class ClassQuestion {
     private int reward;
 
     @OneToOne(fetch = FetchType.LAZY)
-    private Subject subject;
+    @JoinColumn(name = "CLASS_SUBJECT_ID")
+    private ClassSubject classSubject;
+
+    @Column(name = "CLASS_LEVEL")
+    private int classLevel;
 
     @Embedded
     private Image image = new Image();
